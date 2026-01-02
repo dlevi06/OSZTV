@@ -317,54 +317,46 @@ Router(config-if)# ipv6 address 2001:db8:acad:1::1/64
 Router(config-if)# no shutdown  <-- Bekapcsolás!
 ```
 
-Ellenőrzés (Show parancsok)
-show ip interface brief: Gyors áttekintés (IP-k, Status: UP/UP).
+### Ellenőrzés (Show parancsok)
+* `show ip interface brief`: Gyors áttekintés (IP-k, Status: UP/UP).
+* `show ip route`: Routing tábla (útválasztási tábla).
+* `show interfaces`: Részletes információk (MAC cím, hibák, forgalom).
 
-show ip route: Routing tábla.
+### Alapértelmezett Átjáró (Default Gateway)
+* **PC-n:** A helyi router belső interfészének IP-címe. Ha ez rossz (vagy nincs beállítva), a PC nem éri el a távoli hálózatokat (pl. Internetet), csak a helyi gépeket.
+* **Switchen:** Az `ip default-gateway [IP]` parancs kell hozzá. Erre azért van szükség, hogy a switch menedzsment felülete (SSH/Telnet) távolról is elérhető legyen.
 
-show interfaces: Részletes (MAC cím, hibák).
+---
 
-Alapértelmezett Átjáró (Default Gateway)
-PC-n: A helyi router belső interfészének IP-címe. Ha ez rossz (vagy nincs), a PC nem éri el a távoli hálózatokat (Internetet), csak a helyi gépeket.
+### OSZTV Kiemelt Ellenőrző Kérdések
+*(A megadott tesztkérdések alapján)*
 
-Switchen: ip default-gateway [IP] parancs kell, hogy a switch menedzsment felülete távolról elérhető legyen.
+**1. Melyik információ alapján továbbítja a router a csomagot?**
+* *Válasz:* A cél IP-cím alapján (Destination IP address).
 
-OSZTV Kiemelt Ellenőrző kérdések (a megadott tesztkérdések alapján)
-1. Melyik információ alapján továbbítja a router a csomagot?
+**2. Mi történik a TTL mezővel, ahogy a csomag áthalad egy routeren?**
+* *Válasz:* Csökken eggyel. Ha eléri a nullát, a csomagot eldobják (Loop elkerülése végett).
 
-Válasz: A cél IP-cím alapján (Destination IP address).
+**3. Melyik IPv4 mező jelzi a felsőbb réteg protokollját (pl. TCP vagy UDP)?**
+* *Válasz:* Protocol mező.
 
-2. Mi történik a TTL mezővel, ahogy a csomag áthalad egy routeren?
+**4. Mi a funkciója az ARP-nek?**
+* *Válasz:* Az ismert IP-címhez megtalálni a hozzá tartozó fizikai (MAC) címet a helyi hálózaton.
 
-Válasz: Csökken egyel. Ha eléri a nullát, a csomagot eldobják.
+**5. Milyen típusú üzenet az ARP Request?**
+* *Válasz:* Broadcast (Szórás) – mindenki megkapja.
 
-3. Melyik IPv4 mező jelzi a felsőbb réteg protokollját (pl. TCP vagy UDP)?
+**6. IPv6-ban mi helyettesíti az ARP-t?**
+* *Válasz:* ICMPv6 Neighbor Discovery (ND).
 
-Válasz: Protocol mező.
+**7. Melyik parancs menti a konfigurációt, hogy újraindítás után is megmaradjon?**
+* *Válasz:* `copy running-config startup-config`
 
-4. Mi a funkciója az ARP-nek?
+**8. Mi a teendő, ha a routeren a `show ip interface brief` parancsra az interfész állapota "Administratively Down"?**
+* *Válasz:* Ki kell adni a `no shutdown` parancsot az interfész konfigurációs módban.
 
-Válasz: Az ismert IP-címhez megtalálni a MAC-címet a helyi hálózaton.
-
-5. Milyen típusú üzenet az ARP Request?
-
-Válasz: Broadcast (Szórás).
-
-6. IPv6-ban mi helyettesíti az ARP-t?
-
-Válasz: ICMPv6 Neighbor Discovery (ND).
-
-7. Melyik parancs menti a konfigurációt, hogy újraindítás után is megmaradjon?
-
-Válasz: copy running-config startup-config.
-
-8. Mi a teendő, ha a routeren a show ip interface brief parancsra az interfész állapota "Administratively Down"?
-
-Válasz: Ki kell adni a no shutdown parancsot az interfész konfigurációs módban.
-
-9. Ha egy PC eléri a helyi fájlszervert, de az internetet nem, mi a legvalószínűbb hiba?
-
-Válasz: Rossz vagy hiányzó Alapértelmezett Átjáró (Default Gateway) beállítás a PC-n.
+**9. Ha egy PC eléri a helyi fájlszervert, de az internetet nem, mi a legvalószínűbb hiba?**
+* *Válasz:* Rossz vagy hiányzó Alapértelmezett Átjáró (Default Gateway) beállítás a PC-n.
 
 ---
 
